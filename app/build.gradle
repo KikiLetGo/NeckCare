@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.elexlab.neckcare"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 注意：这里需要添加项目所需 CPU 类型的最小集
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
+        }
+        manifestPlaceholders = [
+                //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID
+                //后续所有产品的 APPID 均统一配置为 GETUI_APPID 占位符
+                GETUI_APPID: "您的个推APPID",
+        ]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    signingConfigs {//为了测试推送服务，这里手动指定debug包使用和release包一样的签名
+        release {
+            keyAlias 'Alias'
+            keyPassword 'Password'
+            storeFile file('D:\\program\\android\\NeckCare\\neckcare.jks')
+            storePassword 'Password'
+        }
+        debug {
+            keyAlias 'Alias'
+            keyPassword 'Password'
+            storeFile file('D:\\program\\android\\NeckCare\\neckcare.jks')
+            storePassword 'Password'
+        }
+        buildTypes {
+            debug {
+                signingConfig signingConfigs.release
+            }
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    compile files('libs/lite-orm-1.9.2.jar')
+
+    implementation 'com.google.mediapipe:solution-core:latest.release'
+    implementation 'com.google.mediapipe:facemesh:latest.release'
+
+    implementation 'com.getui:gtsdk:3.2.12.0'  //个推SDK
+    implementation 'com.getui:gtc:3.1.12.0'  //个推核心组件
+
+    implementation 'com.huawei.hms:push:6.7.0.300'
+
+}
