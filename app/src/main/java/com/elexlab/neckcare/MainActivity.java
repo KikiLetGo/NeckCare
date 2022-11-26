@@ -65,10 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         usageStatsPermissionCheck();
 
-        initViews();
         initHMSCorePush();
 
-        findViewById(R.id.tvSettings).setOnClickListener(v -> UserAvatar.getInstance().getFSM().changeState(new ExerciseState()));
     }
 
     private boolean isIgnoringBatteryOptimizations() {
@@ -99,53 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initViews(){
-        sbExercisePeriod = findViewById(R.id.sbExercisePeriod);
-        tvExercisePeriod = findViewById(R.id.tvExercisePeriod);
-        sbRepeats = findViewById(R.id.sbRepeats);
-        tvRepeats = findViewById(R.id.tvRepeats);
-        sbForceLevel = findViewById(R.id.sbForceLevel);
-        tvForceLevel = findViewById(R.id.tvForceLevel);
 
-        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Setting setting = new Setting();
-                setting.setExercisePeriod(sbExercisePeriod.getProgress());
-                setting.setRepeats(sbRepeats.getProgress());
-                setting.setForceLevel(sbForceLevel.getProgress());
-                setSettings(setting);
-            }
-        };
-
-        sbExercisePeriod.setOnSeekBarChangeListener(listener);
-        sbRepeats.setOnSeekBarChangeListener(listener);
-        sbForceLevel.setOnSeekBarChangeListener(listener);
-
-
-
-        gvWhiteList = findViewById(R.id.gvWhiteList);
-
-
-
-
-        findViewById(R.id.ivAddApp).setOnClickListener(v->{
-            AppChooseActivity.startActivity(this,CHOOSE_APP_CODE);
-        });
-
-
-        loadWriteList();
-    }
 
     private void loadWriteList(){
         new WriteListDataSource(this).getDatas(new DataSourceCallback<List<App>>() {
